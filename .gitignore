@@ -1,0 +1,9 @@
+.venv/
+Data/
+PEMS-BAY-META.csv
+
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.env

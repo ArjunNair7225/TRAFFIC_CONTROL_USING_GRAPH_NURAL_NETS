@@ -1,0 +1,11 @@
+[project]
+name = "traffic-flow-by-using-graph-neural-nets"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "h5py>=3.16.0",
+    "ipykernel>=7.3.0",
+    "pandas>=3.0.5",
+]
