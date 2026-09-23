@@ -101,7 +101,7 @@ Traffic datasets are naturally highly imbalanced; notice there are **2,337,194**
 ## 🔮 Time-Series Forecasting Results
 *Place your final prediction vs. actual speed snapshot graph here:*
 
-![GCN Traffic Flow Prediction vs Actual - Sensor 0](path_to_your_final_prediction_plot.png)
+![GCN Traffic Flow Prediction vs Actual - Sensor 0](/Assets/GCN.png)
 
 ---
 
