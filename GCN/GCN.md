@@ -52,7 +52,7 @@ Transforming feature parameters into a normal distribution (μ = 0.0, σ = 1.0) 
 ### 📉 Raw & Scaled Baseline Loss Curves
 *Place your training progress graph here to show the dramatic difference normalization made:*
 
-![Raw Data GCN Training Progress](path_to_your_raw_loss_plot.png)
+![Raw Data GCN Training Progress](../Assets/GCN.png)
 
 ---
 
@@ -101,7 +101,7 @@ Traffic datasets are naturally highly imbalanced; notice there are **2,337,194**
 ## 🔮 Time-Series Forecasting Results
 *Place your final prediction vs. actual speed snapshot graph here:*
 
-![GCN Traffic Flow Prediction vs Actual - Sensor 0](/Assets/GCN.png)
+![GCN Traffic Flow Prediction vs Actual - Sensor 0](../Assets/GCN.png)
 
 ---
 
