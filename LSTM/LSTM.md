@@ -256,7 +256,7 @@ RMSE gives greater weight to larger prediction errors.
 
 The following graph compares the actual and predicted traffic speed for **Sensor 0** over the first **200 test time steps**.
 
-![LSTM Traffic Speed Prediction - Sensor 0](./lstm_prediction_sensor0.png)
+![LSTM Traffic Speed Prediction - Sensor 0](../Assets/LSTM.png)
 
 ### Graph Interpretation
 
