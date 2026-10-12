@@ -227,6 +227,24 @@ Develop a traffic monitoring dashboard.
 
 Use additional factors such as weather, road conditions and accidents.
 
+## Interactive Traffic Intelligence UI
+
+The repository includes a Streamlit dashboard for presenting the trained GCN model
+as an interactive demo. It loads the real PEMS-BAY data, the saved
+`GCN/best_gcn_model.pth` checkpoint, and the sensor adjacency graph.
+
+Start it from the repository root:
+
+```bash
+uv sync
+uv run streamlit run app.py
+```
+
+The dashboard lets you select a sensor, move through the historical dataset,
+apply a slowdown/speed-up scenario, and run a multi-step forecast. It shows the
+forecast as an animated timeline, ranks network hotspots, and translates the
+predicted speed into a free-flow, congested, or critical state.
+
 Team
 
 This is a group project developed as part of an academic project on traffic flow prediction using Deep Learning and Graph Neural Networks.
