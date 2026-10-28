@@ -217,40 +217,52 @@ The lowest reported validation loss occurs at **Epoch 20**.
 
 ##  Final Performance Summary
 
-The final model is evaluated on the unseen test split after predictions are mapped back to the original traffic-speed scale.
+The latest notebook evaluation inverse-transforms predictions and targets to the original traffic-speed scale. Regression metrics are calculated over all test sensor-timestep values; MAPE excludes actual speeds with absolute values at or below **1 mph**.
 
-| Metric | LSTM Result |
+| Metric | Latest LSTM Result |
 | :--- | ---: |
-| **MAE** | **2.5305 mph** |
-| **RMSE** | **4.2249 mph** |
-| Test predictions shape | **(7,806, 325)** |
-| Actual values shape | **(7,806, 325)** |
+| **MAE** | **2.5504 mph** |
+| **RMSE** | **4.2650 mph** |
+| **MAPE** (`|actual| > 1 mph`) | **5.55%** |
+| Test values evaluated | **2,536,950** |
 
-### What the metrics mean
+### Traffic-speed classification
 
-**MAE (Mean Absolute Error)**
+For a categorical view of the same test predictions, speeds are grouped using thresholds of 30 mph and 60 mph:
 
-```text
-MAE = average(|Actual - Predicted|)
-```
+| Class | Speed range | Actual support | Predicted count |
+| :--- | :--- | ---: | ---: |
+| Low Speed | `< 30 mph` | 82,767 | 50,834 |
+| Medium Speed | `30 to < 60 mph` | 390,774 | 461,212 |
+| High Speed | `>= 60 mph` | 2,063,409 | 2,024,904 |
 
-The model has an average absolute prediction error of approximately:
+| Classification metric | Result |
+| :--- | ---: |
+| **Accuracy** | **88.99%** |
+| **Macro F1-score** | **0.7611** |
+| **Weighted F1-score** | **0.8919** |
 
-> **2.53 mph**
+#### Per-class report
 
-**RMSE (Root Mean Squared Error)**
+| Class | Precision | Recall | F1-score | Support |
+| :--- | ---: | ---: | ---: | ---: |
+| Low Speed | 0.88 | 0.54 | 0.67 | 82,767 |
+| Medium Speed | 0.62 | 0.73 | 0.67 | 390,774 |
+| High Speed | 0.95 | 0.93 | 0.94 | 2,063,409 |
+| Macro average | 0.82 | 0.74 | 0.76 | 2,536,950 |
+| Weighted average | 0.90 | 0.89 | 0.89 | 2,536,950 |
 
-```text
-RMSE = √(average((Actual - Predicted)²))
-```
+#### Confusion matrix
 
-The reported RMSE is:
+Rows are actual classes and columns are predicted classes, ordered Low, Medium, High:
 
-> **4.22 mph**
+| Actual \ Predicted | Low | Medium | High |
+| :--- | ---: | ---: | ---: |
+| Low | 44,599 | 37,543 | 625 |
+| Medium | 6,039 | 286,797 | 97,938 |
+| High | 196 | 136,872 | 1,926,341 |
 
-RMSE gives greater weight to larger prediction errors.
-
----
+The classification scores describe thresholded regression predictions. They supplement the regression metrics and depend on the stated speed thresholds.
 
 ##  Actual vs Predicted Traffic Speed
 
@@ -283,7 +295,7 @@ Predict test set
         ↓
 Compare predictions with actual values
         ↓
-Calculate MAE and RMSE
+Calculate regression and classification metrics
 ```
 
 The final prediction and actual arrays have the following shape:
@@ -372,8 +384,9 @@ Gradient Clipping   : 1.0
 
 - The model performs **multi-sensor traffic-speed forecasting**, predicting all 325 sensor values for the next timestep.
 - The input sequence contains the previous **12 timesteps**, corresponding to **60 minutes of historical observations** because the data is sampled every 5 minutes.
-- The reported MAE and RMSE are calculated on the test predictions after evaluation.
-- The supplied experiment reports **MAE and RMSE**; no MAPE, accuracy, or F1-score result is included for the LSTM experiment.
+- The reported regression metrics are calculated after inverse scaling. MAPE excludes actual speeds with absolute values at or below **1 mph**.
+- Classification metrics are calculated by assigning actual and predicted speeds to Low (`< 30 mph`), Medium (`30 to < 60 mph`), and High (`>= 60 mph`) classes.
+- The classification report, class counts, and confusion matrix are included above.
 - The prediction visualization shown in this README is for **Sensor 0** and the first **200 test time steps**.
 
 ---
@@ -382,22 +395,15 @@ Gradient Clipping   : 1.0
 
 The LSTM experiment demonstrates a sequence-based approach for forecasting traffic speeds in the PEMS-BAY network.
 
-### Final Results
+### Latest Results
 
-```text
-              LSTM
-               │
-        ┌──────┴──────┐
-        │             │
-      MAE           RMSE
-     2.5305         4.2249
-      mph             mph
-```
+- **Best validation loss:** `0.2750`
+- **Test MAE:** `2.5504 mph`
+- **Test RMSE:** `4.2650 mph`
+- **Test MAPE:** `5.55%` (`|actual| > 1 mph`)
+- **Classification accuracy:** `88.99%`
+- **Classification macro F1:** `0.7611`
+- **Classification weighted F1:** `0.8919`
+- **Model checkpoint:** `best_lstm_model.pth`
 
-**Best validation loss:** `0.2750`
-
-**Test MAE:** `2.5305 mph`
-
-**Test RMSE:** `4.2249 mph`
-
-**Model checkpoint:** `best_lstm_model.pth`
+See the [classification report and confusion matrix](#traffic-speed-classification) for per-class results.
